@@ -19,9 +19,10 @@ import regions.HeaderMenu;
 
 public class Base extends Page {
 	
-	private By loginButton = By.id("login-button");
+	private By loginLink = By.id("login-button");
 	private By loginEmail = By.id("email");
 	private By loginPass = By.id("pass");
+	private By loginButton = By.id("loginbutton");
 	
 	private By spLogoLocator = By.cssSelector(".header-logo");
 	private By spLogoLinkLocator = By.cssSelector(".header-logo a");
@@ -31,18 +32,19 @@ public class Base extends Page {
 		super(d);
 	}
 	
-	public Home login(String email, String pass){
+	public void login(String email, String pass){
 		//wait for login button
 		this.getWait().until(new ExpectedCondition<WebElement>() {
 			@Override
 			public WebElement apply(WebDriver d) {
-				return d.findElement(loginButton);
+				return d.findElement(loginLink);
 			}
 		});
+		
 		//Save the current windows handle
 		String parentWindowHandle = this.driver.getWindowHandle();
 		
-		this.driver.findElement(loginButton).click();
+		this.driver.findElement(loginLink).click();
 		this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		WebDriver loginPageDriver = null;
 		Set<String> windowHandles = this.driver.getWindowHandles();
@@ -60,8 +62,7 @@ public class Base extends Page {
 		loginPageDriver.findElement(loginButton).click();
 		
 		this.driver.switchTo().window(parentWindowHandle);
-		
-		return new Home(this.driver);
+		//return new Home(this.driver);
 	}
 	
 	public String getPageTitle() {
@@ -98,9 +99,9 @@ public class Base extends Page {
 	public class HeaderRegion extends Page {
 		
 		//Logged in
-		private By accountControllerLocator = By.className("header-panel");
+		private By accountSectionLocator = By.className("header-panel");
 		private By accountDropdownLocator = By.cssSelector(".member-dropdown hide a");
-		private By accountPicLocator = By.cssSelector(".header-member img");
+		private By accountImgLocator = By.cssSelector(".header-member img");
 		
 		//Navigation menu
 		private By siteNavigationMenusLocator = By.cssSelector("nav > a");
@@ -110,8 +111,11 @@ public class Base extends Page {
 			super(d);
 		}
 		
-		public boolean isAccountPicVisible() {
-			return this.isElementVisible(accountPicLocator);
+		public boolean isAccountSectionPresent() {
+			return this.isElementPresent(accountSectionLocator);
+		}
+		public boolean isAccountImgVisible() {
+			return this.isElementVisible(accountImgLocator);
 		}
 		
 		public boolean isAccountDropdownPresent() {

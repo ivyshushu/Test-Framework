@@ -6,8 +6,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 
 public class TestSetup {
-	protected final WebDriver driver;
-	private String baseUrl = "http://sneakpeeq.com";
+	protected WebDriver driver;
+	private final String baseUrl = "http://sneakpeeq.com";
 	
 	public TestSetup() {
 		System.setProperty("webdriver.chrome.driver", "/Users/ivyshushu/Documents/workspace/Test-Framework/bin/chromedriver");
@@ -25,7 +25,7 @@ public class TestSetup {
 ***/
 	
 	public WebDriver getDriver() {
-		return driver;
+		return this.driver;
 	}
 
 }

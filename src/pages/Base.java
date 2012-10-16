@@ -1,19 +1,19 @@
 package pages;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.NoSuchElementException;
+//import org.openqa.selenium.ElementNotVisibleException;
+//import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
+//import org.openqa.selenium.support.ui.WebDriverWait;
 
 import regions.HeaderMenu;
 
@@ -105,7 +105,7 @@ public class Base extends Page {
 		
 		//Navigation menu section
 		private By siteNavigationMenusLocator = By.cssSelector("nav > a");
-		
+		private By menuLiving = By.id("selector-living");
 		
 		public HeaderRegion(WebDriver d) {
 			super(d);
@@ -123,7 +123,7 @@ public class Base extends Page {
 			return this.isElementPresent(accountDropdownLocator);
 		}
 		
-		//public boolean isPeeqIconVisible() {}
+		//public boolean isEyeIconVisible() {}
 		//public boolean isCartIconVisble() {}
 		//......
 		
@@ -156,8 +156,10 @@ public class Base extends Page {
 			return menus;
 		}
 		
-		public Living clickLivingMenu() {
-			return new Living(this.getDriver());
+		public void clickLivingMenu() {
+			Actions builder = new Actions(this.getDriver());
+			builder.click(this.getDriver().findElement(menuLiving)).build().perform();
+		    //return new Living(this.getDriver());
 		} 
 		
 		//add clickBeauty(), clickInspiration(), clickStyle()

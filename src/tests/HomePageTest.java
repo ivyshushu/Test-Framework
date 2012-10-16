@@ -8,16 +8,16 @@ import org.junit.Test;
 
 public class HomePageTest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
+		TestSetup setup = new TestSetup();
+	
 
 	@After
 	public void tearDown() throws Exception {
+		setup.getDriver().quit();
 	}
 
 	@Test
-	public void test() {
+	public void testEachMenuLink() {
 		fail("Not yet implemented");
 	}
 

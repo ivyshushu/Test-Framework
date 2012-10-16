@@ -1,4 +1,5 @@
 package pages;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.NoSuchElementException;
@@ -50,7 +51,7 @@ public abstract class Page {
 		this.driver.get(url);
 	}
 	
-	public boolean isCurrentPage(String expectedUrl) {
+	public boolean isCurrentPage(String expectedTitle) {
 		if(this.driver.getTitle().isEmpty()) {
 			this.wait.until(new ExpectedCondition<String>() {
 				@Override
@@ -60,7 +61,7 @@ public abstract class Page {
 			});
 		}
 		
-		if(expectedUrl.equals(this.driver.getTitle()))
+		if(expectedTitle.equals(this.driver.getTitle()))
 			return true;
 		else
 			return false;

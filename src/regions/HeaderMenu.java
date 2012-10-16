@@ -9,14 +9,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import pages.Base;
-import pages.Living;
 import pages.Page;
 
 public class HeaderMenu extends Page {
 	private By menuItemsLocator = By.cssSelector("ul > li");
 	private By menuNameLocator = By.cssSelector("a");
-	private By spLogoLocator = By.cssSelector(".header-logo");
+	//private By spLogoLocator = By.cssSelector(".header-logo");
 	
 	private WebElement rootElement;
 	
@@ -29,13 +27,17 @@ public class HeaderMenu extends Page {
 		return this.rootElement.findElement(menuNameLocator).getText();
 	}
 	
-	public Page click() {
+	/******
+	public Living clickLiving() {
 		String menuName = this.getMenuName();
 		this.rootElement.findElement(menuNameLocator).click();
 		
-		Actions a = new Actions(this.driver);
-		a.moveToElement(rootElement.findElement(spLogoLocator)).perform();
+		Actions builder = new Actions(this.driver);
+		builder.moveToElement(rootElement.findElement(spLogoLocator)).perform();
 		
+		
+		
+		/***
 		if(menuName.contains("Living")) {
 			return new Living(this.driver);
 		} else if(menuName.contains("Style")) {
@@ -46,6 +48,10 @@ public class HeaderMenu extends Page {
 			return new Inspiration(this.driver);
 		}
 	}
+		***/
+	
+
+
 	
 	public void hover() {
 		WebElement element = this.rootElement.findElement(menuNameLocator);
@@ -79,6 +85,7 @@ public class HeaderMenu extends Page {
 			return this.rootElement.findElement(menuNameLocator).getText();
 		}
 		
+	/*********************
 		public Base click() {
 			String menuName = this.menuList.getMenuName();
 			this.menuList.hover();
@@ -96,6 +103,7 @@ public class HeaderMenu extends Page {
 				return Inspiration(this.driver);
 			}
 		} 
+		****************************/
 		
 	}
 }

@@ -103,7 +103,7 @@ public class Base extends Page {
 		private By accountDropdownLocator = By.cssSelector(".member-dropdown hide a");
 		private By accountImgLocator = By.cssSelector(".header-member img");
 		
-		//Navigation menu
+		//Navigation menu section
 		private By siteNavigationMenusLocator = By.cssSelector("nav > a");
 		
 		
@@ -111,6 +111,7 @@ public class Base extends Page {
 			super(d);
 		}
 		
+		//After log in, Account section
 		public boolean isAccountSectionPresent() {
 			return this.isElementPresent(accountSectionLocator);
 		}
@@ -122,11 +123,13 @@ public class Base extends Page {
 			return this.isElementPresent(accountDropdownLocator);
 		}
 		
-		/***
-		 * This returns a menu selector
-		 ***/
-		public HeaderMenu siteNavigationMenu(String value) throws Exception {
-			for(HeaderMenu m : this.siteNavigationMenus()) {
+		//public boolean isPeeqIconVisible() {}
+		//public boolean isCartIconVisble() {}
+		//......
+		
+		//return a menu
+		public HeaderMenu getSiteNavigationMenu(String value) throws Exception {
+			for(HeaderMenu m : this.getSiteNavigationMenus()) {
 				if(m.getMenuName().equals(value)) {
 					return m;
 					}
@@ -134,10 +137,8 @@ public class Base extends Page {
 			throw new Exception("No such menu existed!");
 		}
 		
-		/***
-		 * This returns a list of menu selectors
-		 ***/
-		public List<HeaderMenu> siteNavigationMenus() {
+		//return all the menus
+		public List<HeaderMenu> getSiteNavigationMenus() {
 			this.getWait().until(new ExpectedCondition<Integer>() {
 				@Override
 				public Integer apply (WebDriver d) {
@@ -154,5 +155,13 @@ public class Base extends Page {
 			
 			return menus;
 		}
+		
+		public Living clickLivingMenu() {
+			return new Living(this.getDriver());
+		} 
+		
+		//add clickBeauty(), clickInspiration(), clickStyle()
+		
+		
 	}
 }

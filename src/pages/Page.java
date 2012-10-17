@@ -5,6 +5,7 @@ import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -93,6 +94,15 @@ public abstract class Page {
 		} catch(StaleElementReferenceException e) {
 			return false;
 		}
+	}
+	
+	public ExpectedCondition<WebElement> visibilityOfElementLocated(final By by) {
+		return new ExpectedCondition<WebElement>() {
+			public WebElement apply(WebDriver d) {
+				WebElement element = d.findElement(by);
+				return element.isDisplayed() ? element : null;
+			}
+		};
 	}
 	
 }

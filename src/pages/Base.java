@@ -102,10 +102,11 @@ public class Base extends Page {
 		private By accountImgLocator = By.cssSelector(".header-member img");
 		
 		//Navigation menu section
-		private By siteNavigationMenusLocator = By.cssSelector("nav > a");
-		//private By menuLivingLocator = By.id("selector-living");
+		private By siteNavigationLocator = By.cssSelector("nav");
+		private By siteNavigationMenusLocator = By.cssSelector("nav>a");
+		private By menuItemListLocator = By.cssSelector("div>ul>li");
 		private List<HeaderMenu> headerMenus;
-		private int menusCount = 4;
+		//private int menusCount = 4;
 		
 		public HeaderRegion(WebDriver d) {
 			super(d);
@@ -140,10 +141,11 @@ public class Base extends Page {
 		
 		//find all the menus
 		public List<HeaderMenu> getSiteNavigationMenus() {
-			this.getWait().until(new ExpectedCondition<Boolean>() {
+			this.getWait().until(new ExpectedCondition<WebElement>() {
 				@Override
-				public Boolean apply (WebDriver d) {
-					return d.findElements(siteNavigationMenusLocator).size() == menusCount;
+				public WebElement apply (WebDriver d) {
+					WebElement e = d.findElement(siteNavigationLocator);
+					return e.isDisplayed() ? e : null;
 				}
 			});
 			
@@ -169,6 +171,17 @@ public class Base extends Page {
 			try {
 				HeaderMenu menu = this.getSiteNavigationMenu(name);
 				menu.hover();
+				this.getWait().until(this.visibilityOfElementLocated(menuItemListLocator));
+			    /******
+			   {
+			
+					public WebElement apply(WebDriver d) {
+						WebElement e = d.findElement(menuItemListLocator);
+						return e.isDisplayed() ? e : null;
+					}
+				});
+				*****/
+						
 				return menu;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

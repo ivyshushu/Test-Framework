@@ -13,9 +13,8 @@ import pages.Page;
 
 public class HeaderMenu extends Page {
 	
-	private By menuItemsLocator = By.cssSelector("ul>li>a");
+	private By menuItemsLocator = By.cssSelector("ul>li");
 	private String menuNameLocator = "data-store";
-	private String menuItemStyle = "sytle";
 	
 	//rootElement is the menu need to check out
 	private WebElement rootElement;
@@ -42,7 +41,10 @@ public class HeaderMenu extends Page {
 	}
 	
 	public boolean isDropdownMenuVisible() {
-		return this.getDriver().findElement(By.cssSelector("ul")).getAttribute("style").equals("display: block; ");
+		
+		WebElement element = this.getDriver().findElement(By.cssSelector("div>ul>li"));
+		return element.isDisplayed();
+		
 	}
 	
 	public HeaderMenuItem getMenuItem(String name) throws Exception {

@@ -43,7 +43,7 @@ public class TestLayout {
 		if(!home.isLoggedIn()) {
 			home.login("ivyshushu@gmail.com", "6314134223");
 		}
-		setup.getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		setup.getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	    HeaderRegion header = home.header();
 		HeaderMenu menu = header.hoverMenu("living");
 		assertEquals("living", menu.getMenuName());

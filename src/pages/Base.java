@@ -10,8 +10,6 @@ import org.openqa.selenium.By;
 //import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 //import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -105,10 +103,13 @@ public class Base extends Page {
 		
 		//Navigation menu section
 		private By siteNavigationMenusLocator = By.cssSelector("nav > a");
-		private By menuLiving = By.id("selector-living");
+		//private By menuLivingLocator = By.id("selector-living");
+		private List<HeaderMenu> headerMenus;
+		private int menusCount = 4;
 		
 		public HeaderRegion(WebDriver d) {
 			super(d);
+			this.headerMenus = new ArrayList<HeaderMenu>();
 		}
 		
 		//After log in, Account section
@@ -127,7 +128,7 @@ public class Base extends Page {
 		//public boolean isCartIconVisble() {}
 		//......
 		
-		//return a menu
+		//find a menu
 		public HeaderMenu getSiteNavigationMenu(String value) throws Exception {
 			for(HeaderMenu m : this.getSiteNavigationMenus()) {
 				if(m.getMenuName().equals(value)) {
@@ -137,33 +138,44 @@ public class Base extends Page {
 			throw new Exception("No such menu existed!");
 		}
 		
-		//return all the menus
+		//find all the menus
 		public List<HeaderMenu> getSiteNavigationMenus() {
-			this.getWait().until(new ExpectedCondition<Integer>() {
+			this.getWait().until(new ExpectedCondition<Boolean>() {
 				@Override
-				public Integer apply (WebDriver d) {
-					return d.findElements(siteNavigationMenusLocator).size();
+				public Boolean apply (WebDriver d) {
+					return d.findElements(siteNavigationMenusLocator).size() == menusCount;
 				}
 			});
 			
-			List<HeaderMenu> menus = new ArrayList<HeaderMenu>();
-			
 			for (WebElement e : this.driver.findElements(siteNavigationMenusLocator)) {
 				HeaderMenu m = new HeaderMenu(this.driver, e);
-				menus.add(m);
+				this.headerMenus.add(m);
 			}
 			
-			return menus;
+			return headerMenus;
 		}
 		
-		public void clickLivingMenu() {
-			Actions builder = new Actions(this.getDriver());
-			builder.click(this.getDriver().findElement(menuLiving)).build().perform();
-		    //return new Living(this.getDriver());
+		public void clickMenu(String name) {
+			try {
+				HeaderMenu menu = this.getSiteNavigationMenu(name);
+				menu.click();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} 
 		
-		//add clickBeauty(), clickInspiration(), clickStyle()
-		
+		public HeaderMenu hoverMenu(String name) {
+			try {
+				HeaderMenu menu = this.getSiteNavigationMenu(name);
+				menu.hover();
+				return menu;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		} 
 		
 	}
 }

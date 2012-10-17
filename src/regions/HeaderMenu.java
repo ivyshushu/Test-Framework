@@ -12,98 +12,78 @@ import org.openqa.selenium.interactions.Actions;
 import pages.Page;
 
 public class HeaderMenu extends Page {
-	private By menuItemsLocator = By.cssSelector("ul > li");
-	private By menuNameLocator = By.cssSelector("a");
-	//private By spLogoLocator = By.cssSelector(".header-logo");
 	
+	private By menuItemsLocator = By.cssSelector("ul>li>a");
+	private String menuNameLocator = "data-store";
+	private String menuItemStyle = "sytle";
+	
+	//rootElement is the menu need to check out
 	private WebElement rootElement;
+	private List<HeaderMenuItem> menuItems;
 	
 	public HeaderMenu(WebDriver d, WebElement e) {
 		super(d);
 		this.rootElement = e;
+		this.menuItems = null;
 	}
 	
 	public String getMenuName() {
-		return this.rootElement.findElement(menuNameLocator).getText();
+		return this.rootElement.getAttribute(menuNameLocator);
 	}
-	
-	/******
-	public Living clickLiving() {
-		String menuName = this.getMenuName();
-		this.rootElement.findElement(menuNameLocator).click();
-		
-		Actions builder = new Actions(this.driver);
-		builder.moveToElement(rootElement.findElement(spLogoLocator)).perform();
-		
-		
-		
-		/***
-		if(menuName.contains("Living")) {
-			return new Living(this.driver);
-		} else if(menuName.contains("Style")) {
-			return new Style(this.driver);
-		} else if(menuName.contains("Beauty")) {
-			return new Beauty(this.driver);
-		} else if(menuName.contains("Inspiration")) {
-			return new Inspiration(this.driver);
-		}
-	}
-		***/
-	
-
-
 	
 	public void hover() {
-		WebElement element = this.rootElement.findElement(menuNameLocator);
 		Actions a = new Actions(this.driver);
-		
-		a.moveToElement(element).perform();
+		a.moveToElement(this.rootElement).perform();
+	}
+	
+	public void click() {
+		Actions a = new Actions(this.driver);
+		a.click(this.rootElement).perform();
 	}
 	
 	public boolean isDropdownMenuVisible() {
-		WebElement dropdownMenu = this.rootElement.findElement(menuItemsLocator);
-		return dropdownMenu.isDisplayed();
+		return this.getDriver().findElement(By.cssSelector("ul")).getAttribute("style").equals("display: block; ");
 	}
 	
-	public List<WebElement> getMenuItems() {
-		return this.rootElement.findElements(menuItemsLocator);
+	public HeaderMenuItem getMenuItem(String name) throws Exception {
+		for(HeaderMenuItem item : this.getMenuItems()) {
+			if(item.getItemName().equals(name))
+				return item;
+		}
+		throw new Exception("No such menu item existed!");
+	}
+	
+	public List<HeaderMenuItem> getMenuItems() {
+		for(WebElement item : this.rootElement.findElements(menuItemsLocator)) {
+			this.menuItems.add(new HeaderMenuItem(this.getDriver(), item, this));
+		}
+		return this.menuItems;
 	}
 	
 	public class HeaderMenuItem extends Page {
-		private By menuNameLocator = By.cssSelector("a");
+		private By itemNameLocator = By.cssSelector(".store-name");
+		
 		private WebElement rootElement;
-		private HeaderMenu menuList;
+		private HeaderMenu menu;
+		//img, tagline, remaining time
 		
-		public HeaderMenuItem(WebDriver d, WebElement e, HeaderMenu m) {
+		public HeaderMenuItem(WebDriver d, WebElement r, HeaderMenu m) {
 			super(d);
-			this.rootElement = e;
-			this.menuList = m;
+			this.rootElement = r;
+			this.menu = m;
 		}
 		
-		public String getMenuName() {
-			this.menuList.hover();
-			return this.rootElement.findElement(menuNameLocator).getText();
+		public String getItemName() {
+			this.menu.hover();
+			return this.rootElement.findElement(itemNameLocator).getText();
 		}
 		
-	/*********************
-		public Base click() {
-			String menuName = this.menuList.getMenuName();
-			this.menuList.hover();
-			
-			Actions a = new Actions(this.driver);
-			a.moveToElement(rootElement.findElement(spLogoLocator)).click().perform();
-			
-			if(menuName.contains("Living")) {
-				return Living(this.driver);
-			} else if(menuName.contains("Style")) {
-				return Style(this.driver);
-			} else if(menuName.contains("Beauty")) {
-				return Beauty(this.driver);
-			} else if(menuName.contains("Inspiration")) {
-				return Inspiration(this.driver);
-			}
-		} 
-		****************************/
+	    public void click() {
+	    	this.menu.hover();
+	    	Actions builder = new Actions(this.getDriver());
+	    	builder.moveToElement(rootElement).click().build().perform();
+	    }
+	    
 		
 	}
 }
